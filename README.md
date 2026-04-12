@@ -1,5 +1,7 @@
 # RF Super Resolution: A Deep Learning Approach to Spatial Enhancement for LoRa
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19451778.svg)](https://doi.org/10.5281/zenodo.19451778)
+
 ---
 
 ## Abstract
