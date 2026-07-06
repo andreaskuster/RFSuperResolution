@@ -1,6 +1,7 @@
 # RF Super Resolution: A Deep Learning Approach to Spatial Enhancement for LoRa
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19451778.svg)](https://doi.org/10.5281/zenodo.19451778)
+[![Dataset DOI](https://img.shields.io/badge/Dataset%20DOI-10.21979%2FN9%2FC6ABM3-blue)](https://doi.org/10.21979/N9/C6ABM3)
 
 ---
 
@@ -39,6 +40,50 @@ pip install -r requirements.txt
 
 ```bash
 python3 example/example.py
+```
+
+---
+
+## Dataset (RFSR-OTA)
+
+The 10,000-packet over-the-air LoRa IQ dataset used to train and evaluate RF-SR is openly available on NTU's institutional research-data repository, DR-NTU (Data):
+
+- **DOI:** [10.21979/N9/C6ABM3](https://doi.org/10.21979/N9/C6ABM3)
+- **Contents:** 10,000 over-the-air LoRa packet recordings (baseband IQ samples; SF12, BW = 125 kHz, CR = 4/5, 16-byte random payload, 8 preamble symbols) collected on the NTU campus, Singapore — spanning indoor LoS, short/mid-range NLoS, and an 800 m over-the-hill link, with varied transmit power and receiver-side RF attenuation for a wide SNR dynamic range. The recordings preserve real hardware impairments (CFO, clock skew) and non-Gaussian urban noise.
+- **License:** [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)
+- **Documentation:** the `README.pdf` on the dataset record describes the collection setup, file format, naming convention, and directory layout.
+
+### Using the dataset with this code
+
+1. Download the archives from the DOI link above and extract them into the directory expected by the OTA data loader (`OTALoRaDataset`); the archive layout is described in the `README.pdf` on the dataset record.
+2. Train on the over-the-air data by adding the `--ota` flag (SF12 only; this is the configuration of the released OTA checkpoint):
+
+   ```bash
+   python3 rfsr/nn/nn.py \
+       --model model0v0lopenaltyhl \
+       --batch_size 1 \
+       --osf 4 \
+       --dataset_size 250 \
+       --learning_rate 0.0001 \
+       --weight_decay 1e-5 \
+       --optimizer adam \
+       --dsf 8 \
+       --ota
+   ```
+
+3. No download needed for evaluation: the OTA-trained checkpoint (`checkpoints/model_model0v0lopenaltyhl_bs1_osf4_ds250_lr0.0001_wd1e-05_ota_dsf8.pth`) ships with this repository, so the paper's OTA results can be reproduced without retraining.
+
+If you use the dataset, please cite it alongside the paper (see [Citation](#citation)):
+
+```bibtex
+@data{N9/C6ABM3_2026,
+  author    = {Kuster, Andreas},
+  publisher = {DR-NTU (Data)},
+  title     = {{An Over-the-Air LoRa IQ Dataset for RF Super Resolution (RFSR-OTA)}},
+  year      = {2026},
+  doi       = {10.21979/N9/C6ABM3},
+  url       = {https://doi.org/10.21979/N9/C6ABM3}
+}
 ```
 
 ---
@@ -122,8 +167,10 @@ If you use RF-SR in your research, please cite:
 @inproceedings{rfsr,
   title     = {{RF Super Resolution}: A Deep Learning Approach to Spatial Enhancement for {LoRa}},
   author    = {Kuster, Andreas and Xu, Huatao and Tan, Rui and Li, Mo},
-  booktitle = {Proceedings of the ACM International Conference on Mobile Systems, Applications, and Services (MobiSys)},
-  year      = {2026}
+  booktitle = {Proceedings of the 24th Annual International Conference on Mobile Systems, Applications and Services (MobiSys '26)},
+  year      = {2026},
+  pages     = {464--477},
+  doi       = {10.1145/3745756.3809216}
 }
 ```
 
