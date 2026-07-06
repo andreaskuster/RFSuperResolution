@@ -110,9 +110,7 @@ class OTALoRaDataset(Dataset):
         # ---------------------
 
         # map them to the post processed, fulltrim files
-        # self.files = list(map(lambda x: x.replace("ota", "post").replace(".cfile", "_fulltrim.cfile"), final_list))
         self.files = list(map(lambda x: x.replace("data/ota", f"{BASE_DIR}/data/post").replace(".cfile", "_fulltrim.cfile"), final_list))
-
 
         # map the files to the reference fiels
         def filename2refnum(filename):
